@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: api-gateway
+    environment: staging
+    version: v1
+  name: api-gateway
+  namespace: staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+      - envFrom:
+        - configMapRef:
+            name: api-gateway-config
+        image: api-gateway:latest
+        name: api-gateway
+        ports:
+        - containerPort: 8080
